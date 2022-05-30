@@ -3,19 +3,29 @@ package com.jsouptest;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
-import org.jsoup.select.Elements;
 
 import java.io.IOException;
 
 public class Application {
 
-    public static void main(String[] args) throws IOException {
-        Document doc = Jsoup.connect("https://en.wikipedia.org/").get();
-        System.out.println((doc.title()));
-        Elements newsHeadlines = doc.select("#mp-itn b a");
-        for (Element headline : newsHeadlines) {
-            System.out.println(String.format("%s\n\t%s",
-                    headline.attr("title"), headline.absUrl("href")));
+    public static void main(String[] args) {
+
+        String monsterRatUrl = "https://www.op.gg/summoners/kr/%EA%B4%B4%EB%AC%BC%EC%A5%90";
+
+        Document doc = null;
+
+        try {
+            doc = Jsoup.connect(monsterRatUrl).get();
+            Element soloRankContent = doc.getElementsByAttributeValue("class", "css-er3yn6 e1x14w4w1").first();
+            Element soloRankInfo = soloRankContent.select(".info").first();
+
+            System.out.println(soloRankInfo.text());
+
+        } catch (IOException e) {
+            e.printStackTrace();
         }
+
+
+
     }
 }
